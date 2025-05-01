@@ -1,6 +1,20 @@
 'use client';
 
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHtml5, faCss3, faJs, faReact, faNodeJs, faPython, faJava, faPhp, faGit, faGithub, faDocker } from "@fortawesome/free-brands-svg-icons";
+import "./css/cardSkills.css";
+import "./css/backgroud.css";
+import { motion, stagger, animate } from "framer-motion";
+
+// Add splitText function
+const splitText = (text: string) => {
+  return {
+    chars: text.split(""),
+    charsName: text.split(""),
+    charsFullStack: text.split(""),
+  };
+};
 
 export default function Home() {
   // Smooth scroll function
@@ -12,17 +26,24 @@ export default function Home() {
     });
   };
 
+  // Split text for animation
+  const { chars } = splitText("Hi, I am");
+  const { charsName } = splitText("Suthep Jantawee");
+  const { charsFullStack } = splitText("Full Stack Developer");
+
   return (
     <div className="bg-[#272642] text-white min-h-screen">
 
       {/* Navigation Bar */}
-      <nav className="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+      <nav className="w-full bg-white/3 backdrop-blur-sm flex justify-between items-center px-8 py-3 mx-auto fixed top-0 left-0 right-0 z-50 ">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#5a5a9e] rounded-md flex items-center justify-center pt-1">
             <Image src="/HEIF.png" alt="logo" width={32} height={32} />
           </div>
           <span className="text-xl font-semibold">FaradayBanana</span>
         </div>
+
+        {/* Desktop Navigation */}
         <div className="hidden md:flex gap-10">
           <a
             href="#skills"
@@ -65,18 +86,141 @@ export default function Home() {
             Contact
           </a>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        <div className="drawer drawer-end md:hidden">
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content flex justify-end">
+            <label htmlFor="my-drawer" className="btn btn-ghost drawer-button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </label>
+          </div>
+          <div className="drawer-side z-50">
+            <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+            <ul className="menu p-4 w-80 min-h-full bg-[#272642] text-white">
+              {/* Close button */}
+              <li className="flex justify-end items-end mb-4">
+                <label htmlFor="my-drawer" className="btn btn-circle btn-ghost">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </label>
+              </li>
+              <li className="mb-4">
+                <a
+                  href="#skills"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("skills");
+                    const drawer = document.getElementById('my-drawer') as HTMLInputElement;
+                    if (drawer) drawer.checked = false;
+                  }}
+                  className="hover:text-gray-300"
+                >
+                  Skills
+                </a>
+              </li>
+              <li className="mb-4">
+                <a
+                  href="#expertise"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("expertise");
+                    const drawer = document.getElementById('my-drawer') as HTMLInputElement;
+                    if (drawer) drawer.checked = false;
+                  }}
+                  className="hover:text-gray-300"
+                >
+                  Experience
+                </a>
+              </li>
+              <li className="mb-4">
+                <a
+                  href="#projects"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("projects");
+                    const drawer = document.getElementById('my-drawer') as HTMLInputElement;
+                    if (drawer) drawer.checked = false;
+                  }}
+                  className="hover:text-gray-300"
+                >
+                  Projects
+                </a>
+              </li>
+              <li className="mb-4">
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection("contact");
+                    const drawer = document.getElementById('my-drawer') as HTMLInputElement;
+                    if (drawer) drawer.checked = false;
+                  }}
+                  className="hover:text-gray-300"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </nav>
+
+      {/* Background */}
+      <div className="background">
+        <div className="heading"></div>
+
+      </div>
 
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-14 py-16 relative">
-        <div className="flex flex-col md:flex-row gap-12 w-full">
+      <motion.section
+        className="max-w-7xl mx-auto px-14 py-16 relative"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.05 }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <div className="flex flex-col md:flex-row gap-12 w-full mt-16 ">
           {/* Left Content */}
           <div className="md:w-1/2 z-20">
             <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
-              Hi, I am<br />
-              Suthep Jantawee<br />
-              Full Stack Developer
+              {chars.map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+              <br />
+              {charsName.map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+              <br />
+              {charsFullStack.map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              ))}
+
             </h1>
             <p className="text-gray-300 mb-10 max-w-md">
               Agency provides a full service range including technical skills, design, business understanding.
@@ -94,7 +238,7 @@ export default function Home() {
           {/* Right Content - Images & Graphics */}
           <div className="w-full mx-10 md:w-1/2 md:absolute right-0 md:min-h-[400px]">
             {/* Purple Circle with Laptop */}
-            <div className="absolute top-0 right-10 md:right-20 bg-purple-500 rounded-full w-40 h-40 mt-10 sm:w-60 sm:h-60 flex items-center justify-center">
+            <div className="absolute top-0 right-10 md:right-20 bg-purple-500 rounded-full w-40 h-40 mt-32 md:mt-10 sm:w-60 sm:h-60 flex items-center justify-center">
               <Image
                 src="/HEIF.png"
                 alt="Laptop illustration"
@@ -120,10 +264,6 @@ export default function Home() {
               <path d="M10,30 Q30,5 50,30 T90,30" fill="none" stroke="currentColor" strokeWidth="2" />
             </svg>
 
-            {/* Squiggly lines - bottom left */}
-            <svg className="hidden md:flex md:absolute  bottom-10 left-0 w-24 h-24 text-gray-400" viewBox="0 0 100 100">
-              <path d="M10,50 Q30,25 50,50 T90,50" fill="none" stroke="currentColor" strokeWidth="2" />
-            </svg>
 
             {/* Document illustration - bottom */}
             <div className="hidden md:flex md:absolute  bottom-20 right-44 bg-white rounded-lg w-44 h-24 shadow-lg">
@@ -144,24 +284,144 @@ export default function Home() {
             </svg>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Skills & Technologies Section */}
-      <section id="skills" className="pt-24 relative mt-10">
+      <motion.section
+        id="skills"
+        className="pt-24 relative mt-20"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.07 }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="w-full text-center justify-center items-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-16">Our Tech Stack</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-12">Skills</h2>
 
           {/* Technology Orbit Visual */}
-          <div className="relative w-full h-[400px] flex justify-center items-center">
-            <div className="relative z-20 flex justify-center items-center w-[140px] h-[140px] rounded-full bg-gradient-to-tr from-[#4b2f8a] to-[#2e1a5a] shadow-[0_0_80px_20px_rgba(107,70,193,0.7)]">
+          {/* <div className="relative z-20 flex justify-center items-center w-[140px] h-[140px] rounded-full bg-gradient-to-tr from-[#4b2f8a] to-[#2e1a5a] shadow-[0_0_80px_20px_rgba(107,70,193,0.7)]">
               <svg aria-hidden="true" className="w-20 h-20 text-white" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" viewBox="0 0 24 24">
                 <path d="M8 7h8M8 17h8M8 12h8 s">
                 </path>
                 <path d="M12 7 8 12 12 17">
                 </path>
               </svg>
+            </div> */}
+
+          {/* language */}
+          {/* React
+            Node.js
+            Express.js
+            JavaScript
+            TypeScript
+            SQL
+            pgAdmin
+            Elasticsearch
+            Hero ui
+            Ant Design
+            Docker
+            Gitlab
+            HTML
+            CSS
+            Tailwind CSS
+            Dart
+            Flutter */}
+          <div className="flex justify-center items-center sm:space-x-6 md:space-x-16 space-x-2 mb-10">
+            <FontAwesomeIcon icon={faHtml5} className="w-8 h-8 text-[#E34F26] md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faCss3} className="w-8 h-8 text-[#1572B6] md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faJs} className="w-8 h-8 text-[#F7DF1E] md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faReact} className="w-8 h-8 text-[#61DAFB] md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faNodeJs} className="w-8 h-8 text-[#339933] md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faGit} className="w-8 h-8 text-[#F05032] md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faGithub} className="w-8 h-8 text-white md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faDocker} className="w-8 h-8 text-[#2496ED] md:text-4xl text-xl" />
+          </div>
+
+          <div className="flex justify-center items-center">
+            <div className="cardSkills">
+              <span
+                style={{
+                  '--top': '10%',
+                  '--left': '20%',
+                  '--size': '60px',
+                  '--delay': '0.1s'
+                } as React.CSSProperties}
+              ></span>
+              <span
+                style={{
+                  '--top': '10%',
+                  '--left': '80%',
+                  '--size': '50px',
+                  '--delay': '0.3s'
+                } as React.CSSProperties}
+              ></span>
+              <span
+                style={{
+                  '--top': '60%',
+                  '--left': '10%',
+                  '--size': '40px',
+                  '--delay': '0.5s'
+                } as React.CSSProperties}
+              ></span>
+              <span
+                style={{
+                  '--top': '30%',
+                  '--left': '65%',
+                  '--size': '70px',
+                  '--delay': '0.7s'
+                } as React.CSSProperties}
+              ></span>
+              <span
+                style={{
+                  '--top': '80%',
+                  '--left': '55%',
+                  '--size': '45px',
+                  '--delay': '1.3s'
+                } as React.CSSProperties}
+              ></span>
+              <span
+                style={{
+                  '--top': '50%',
+                  '--left': '35%',
+                  '--size': '55px',
+                  '--delay': '1.5s'
+                } as React.CSSProperties}
+              ></span>
+              <span
+                style={{
+                  '--top': '15%',
+                  '--left': '45%',
+                  '--size': '75px',
+                  '--delay': '1.7s'
+                } as React.CSSProperties}
+              ></span>
+
+
+              <div>
+                <p className="text-white">
+                  <strong className="text-2xl md:text-3xl ">Language</strong>
+                  <br />
+                  <strong className="text-sm md:text-lg text-gray-300">HTML, CSS, JavaScript, TypeScript, Dart, SQL</strong>
+                </p>
+
+                <p className="text-white">
+                  <strong className="text-2xl md:text-3xl">Framework & Library</strong>
+                  <br />
+                  <strong className="text-sm md:text-lg text-gray-300">ReactJS, NextJS, Flutter, Bootstrap, Tailwindcss, NextUI</strong>
+                </p>
+
+                <p className="text-white">
+                  <strong className="text-2xl md:text-3xl">Tool</strong>
+                  <br />
+                  <strong className="text-sm md:text-lg text-gray-300">Git Version Control, VSCode, Figma, Slack, Diagrams.net, Confluence Jira Software, Vercel</strong>
+                </p>
+
+              </div>
             </div>
-            <svg aria-hidden="true" className="absolute inset-0 w-full h-full" fill="none" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+          </div>
+
+          <div className=" w-full flex h-[200px] justify-center items-center">
+            <svg aria-hidden="true" className="absolute inset-0 w-full h-full mt-[100px]" fill="none" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
               <ellipse cx="450" cy="280" rx="380" ry="80" stroke="#6b46c1" strokeOpacity="0.3" strokeWidth="1">
               </ellipse>
               <ellipse cx="450" cy="280" rx="320" ry="70" stroke="#6b46c1" strokeOpacity="0.3" strokeWidth="1">
@@ -169,30 +429,20 @@ export default function Home() {
               <ellipse cx="450" cy="280" rx="260" ry="60" stroke="#6b46c1" strokeOpacity="0.3" strokeWidth="1">
               </ellipse>
             </svg>
-
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 flex space-x-4">
-              <img alt="Figma logo colorful circle icon" className="w-8 h-8 rounded-full" height="32" src="https://storage.googleapis.com/a1aa/image/27ccee54-0b15-48b0-e841-2ae4d1d6b7f4.jpg" width="32" />
-              <img alt="React logo blue circle icon" className="w-8 h-8 rounded-full" height="32" src="https://storage.googleapis.com/a1aa/image/d9571db9-c694-4553-587a-c4a6c2b44982.jpg" width="32" />
-              <img alt="C programming language logo blue circle icon" className="w-8 h-8 rounded-full" height="32" src="https://storage.googleapis.com/a1aa/image/88400998-eaf7-4851-f856-9539f1c1b246.jpg" width="32" />
-              <img alt="Node.js logo green circle icon" className="w-8 h-8 rounded-full" height="32" src="https://storage.googleapis.com/a1aa/image/047bea6b-98a9-493c-48d7-827768829b58.jpg" width="32" />
-              <img alt="Redux logo purple circle icon" className="w-8 h-8 rounded-full" height="32" src="https://storage.googleapis.com/a1aa/image/320809d8-14da-42ca-800e-0557c6b4861c.jpg" width="32" />
-              <img alt="JavaScript logo yellow circle icon" className="w-8 h-8 rounded-full" height="32" src="https://storage.googleapis.com/a1aa/image/5cf32692-2926-4b51-7d00-24b8a154012c.jpg" width="32" />
-              <img alt="CSS3 logo blue circle icon" className="w-8 h-8 rounded-full" height="32" src="https://storage.googleapis.com/a1aa/image/1f22178b-579f-41e1-2dfa-7d4f249dd1b4.jpg" width="32" />
-            </div>
-            <div className="absolute top-[40px] left-1/2 -translate-x-1/2 flex space-x-6">
-              <img alt="Adobe XD logo pink circle icon" className="w-7 h-7 rounded-full" height="28" src="https://storage.googleapis.com/a1aa/image/579fe2e0-c6c1-47d5-95e6-e5ba8b21aff6.jpg" width="28" />
-              <img alt="Next.js logo dark circle icon" className="w-7 h-7 rounded-full" height="28" src="https://storage.googleapis.com/a1aa/image/df035971-c3ea-44e5-3592-dc2195962b6e.jpg" width="28" />
-              <img alt="Gatsby logo white circle icon" className="w-7 h-7 rounded-full" height="28" src="https://storage.googleapis.com/a1aa/image/036a624f-6b00-4853-cfea-19c90c8f801d.jpg" width="28" />
-              <img alt="Adobe Illustrator logo orange circle icon" className="w-7 h-7 rounded-full" height="28" src="https://storage.googleapis.com/a1aa/image/9379254d-e9e3-4bd8-f4b7-6ca685d749a1.jpg" width="28" />
-              <img alt="Express.js logo gray circle icon" className="w-7 h-7 rounded-full" height="28" src="https://storage.googleapis.com/a1aa/image/8136c8a2-67fc-451f-968b-8df897700dc9.jpg" width="28" />
-              <img alt="MongoDB logo dark circle icon" className="w-7 h-7 rounded-full" height="28" src="https://storage.googleapis.com/a1aa/image/fbc50dc2-5771-4612-fd98-777461026fea.jpg" width="28" />
-            </div>
           </div>
+
         </div>
-      </section>
+      </motion.section>
 
       {/* Experience Section */}
-      <section id="expertise" className="py-24 bg-gradient-to-b ">
+      <motion.section
+        id="expertise"
+        className="bg-gradient-to-b "
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.07 }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="max-w-7xl mx-auto px-8">
           <h2 className="text-4xl md:text-5xl font-bold mb-8">Experience</h2>
           <div className="flex flex-row items-start">
@@ -203,12 +453,12 @@ export default function Home() {
               {/* Year 1 */}
               <div className="flex flex-col items-center">
                 <div className="w-1 h-20 bg-black"></div>
-                <span className="text-black text-2xl font-medium mt-2 mb-2">2020 - 2021</span>
+                <span className="text-2xl font-medium mt-2 mb-2">2020 - 2021</span>
               </div>
               <div className="w-1 h-[200px] bg-black"></div>
               {/* Year 2 */}
               <div className="flex flex-col items-center">
-                <span className="text-black text-2xl font-medium mt-2 mb-2">2022 - Current</span>
+                <span className="text-2xl font-medium mt-2 mb-2">2022 - Current</span>
               </div>
             </div>
             {/* Experience Cards */}
@@ -232,10 +482,17 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-24 bg-gradient-to-b">
+      <motion.section
+        id="projects"
+        className="py-24 bg-gradient-to-b"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.07 }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="max-w-7xl mx-auto px-8">
           {/* Project 1 */}
           <div className="mb-40">
@@ -274,14 +531,21 @@ export default function Home() {
           </div>
         </div>
 
-      </section>
+      </motion.section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-gradient-to-b from-[#272642] to-[#1a1730]">
+      <motion.section
+        id="contact"
+        className="py-24 bg-gradient-to-b from-[#272642] to-[#1a1730]"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.07 }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="max-w-7xl mx-auto px-8">
           <h2 className="text-4xl md:text-5xl font-bold mb-8">Contact</h2>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 }
