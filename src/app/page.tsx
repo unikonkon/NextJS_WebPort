@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHtml5, faCss3, faJs, faReact, faNodeJs, faPython, faJava, faPhp, faGit, faGithub, faDocker } from "@fortawesome/free-brands-svg-icons";
+import { faHtml5, faCss3, faJs, faReact, faNodeJs, faGit, faGithub, faDocker } from "@fortawesome/free-brands-svg-icons";
 import "./css/cardSkills.css";
 import "./css/backgroud.css";
-import { motion, stagger, animate } from "framer-motion";
+import "./css/switchTheme.css";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 // Add splitText function
 const splitText = (text: string) => {
@@ -17,6 +19,16 @@ const splitText = (text: string) => {
 };
 
 export default function Home() {
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   // Smooth scroll function
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
@@ -28,70 +40,60 @@ export default function Home() {
 
   // Split text for animation
   const { chars } = splitText("Hi, I am");
-  const { charsName } = splitText("Suthep Jantawee");
+  const { charsName } = splitText("Test Developer");
   const { charsFullStack } = splitText("Full Stack Developer");
 
   return (
-    <div className="bg-[#272642] text-white min-h-screen">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}>
 
       {/* Navigation Bar */}
-      <nav className="w-full bg-white/3 backdrop-blur-sm flex justify-between items-center px-8 py-3 mx-auto fixed top-0 left-0 right-0 z-50 ">
+      <nav className="w-full backdrop-blur-sm flex justify-between items-center px-3 md:px-8 py-3 mx-auto fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: 'var(--nav-bg)' }}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#5a5a9e] rounded-md flex items-center justify-center pt-1">
-            <Image src="/HEIF.png" alt="logo" width={32} height={32} />
+          <div className="w-10 h-10 rounded-md flex items-center justify-center pt-1" style={{ backgroundColor: 'var(--accent-color)' }}>
+            <Image src="/person.png" alt="logo" width={32} height={32} />
           </div>
-          <span className="text-xl font-semibold">FaradayBanana</span>
+          <span className="text-xl font-semibold">Developer</span>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex gap-10">
-          <a
-            href="#skills"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("skills");
-            }}
-            className="hover:text-gray-300"
+        <div className="hidden md:flex gap-4 items-center">
+
+          <button
+            onClick={() => scrollToSection("skills")}
+            className="btn btn-soft"
+            style={{ color: 'var(--text-primary)' }}
           >
             Skills
-          </a>
-          <a
-            href="#expertise"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("expertise");
-            }}
-            className="hover:text-gray-300"
+          </button>
+          <button
+            onClick={() => scrollToSection("expertise")}
+            className="btn btn-soft"
+            style={{ color: 'var(--text-primary)' }}
           >
             Experience
-          </a>
-          <a
-            href="#pricing"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("projects");
-            }}
-            className="hover:text-gray-300"
+          </button>
+          <button
+            onClick={() => scrollToSection("projects")}
+            className="btn btn-soft"
+            style={{ color: 'var(--text-primary)' }}
           >
             Projects
-          </a>
-          <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("contact");
-            }}
-            className="hover:text-gray-300"
+          </button>
+          <button
+            onClick={() => scrollToSection("contact")}
+            className="btn btn-soft"
+            style={{ color: 'var(--text-primary)' }}
           >
             Contact
-          </a>
+          </button>
+
         </div>
 
         {/* Mobile Navigation Drawer */}
         <div className="drawer drawer-end md:hidden">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex justify-end">
-            <label htmlFor="my-drawer" className="btn btn-ghost drawer-button">
+            <label htmlFor="my-drawer" className="btn btn-ghost drawer-button mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-6 h-6 stroke-current">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
               </svg>
@@ -99,7 +101,7 @@ export default function Home() {
           </div>
           <div className="drawer-side z-50">
             <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-            <ul className="menu p-4 w-80 min-h-full bg-[#272642] text-white">
+            <ul className={`menu p-4 w-80 min-h-full ${theme === 'dark' ? 'bg-[#272642] text-white' : 'bg-white text-black'}`}>
               {/* Close button */}
               <li className="flex justify-end items-end mb-4">
                 <label htmlFor="my-drawer" className="btn btn-circle btn-ghost">
@@ -108,6 +110,7 @@ export default function Home() {
                   </svg>
                 </label>
               </li>
+
               <li className="mb-4">
                 <a
                   href="#skills"
@@ -117,7 +120,7 @@ export default function Home() {
                     const drawer = document.getElementById('my-drawer') as HTMLInputElement;
                     if (drawer) drawer.checked = false;
                   }}
-                  className="hover:text-gray-300"
+                  className={`hover:${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}
                 >
                   Skills
                 </a>
@@ -131,7 +134,7 @@ export default function Home() {
                     const drawer = document.getElementById('my-drawer') as HTMLInputElement;
                     if (drawer) drawer.checked = false;
                   }}
-                  className="hover:text-gray-300"
+                  className={`hover:${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}
                 >
                   Experience
                 </a>
@@ -145,7 +148,7 @@ export default function Home() {
                     const drawer = document.getElementById('my-drawer') as HTMLInputElement;
                     if (drawer) drawer.checked = false;
                   }}
-                  className="hover:text-gray-300"
+                  className={`hover:${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}
                 >
                   Projects
                 </a>
@@ -159,7 +162,7 @@ export default function Home() {
                     const drawer = document.getElementById('my-drawer') as HTMLInputElement;
                     if (drawer) drawer.checked = false;
                   }}
-                  className="hover:text-gray-300"
+                  className={`hover:${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}
                 >
                   Contact
                 </a>
@@ -167,14 +170,22 @@ export default function Home() {
             </ul>
           </div>
         </div>
+
+        {/* Theme Toggle Button */}
+        <div className="">
+          <label htmlFor="switchTheme" className="switchTheme">
+            <input id="switchTheme" type="checkbox" onChange={toggleTheme} />
+            <span className="sliderTheme"></span>
+            <span className="decorationTheme"></span>
+          </label>
+        </div>
+
       </nav>
 
       {/* Background */}
       <div className="background">
         <div className="heading"></div>
-
       </div>
-
 
       {/* Hero Section */}
       <motion.section
@@ -187,7 +198,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row gap-12 w-full mt-16 ">
           {/* Left Content */}
           <div className="md:w-1/2 z-20">
-            <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6" style={{ color: 'var(--text-primary)' }}>
               {chars.map((char, index) => (
                 <motion.span
                   key={index}
@@ -220,17 +231,20 @@ export default function Home() {
                   {char === " " ? "\u00A0" : char}
                 </motion.span>
               ))}
-
             </h1>
-            <p className="text-gray-300 mb-10 max-w-md">
-              Agency provides a full service range including technical skills, design, business understanding.
+            <p className="mb-10 max-w-md" style={{ color: 'var(--text-secondary)' }}>
+              I am a full stack developer with a passion for building web applications.
             </p>
             <div className="flex gap-6 flex-wrap">
-              <button className="bg-[#e76f51] px-6 py-3 rounded-md font-medium hover:bg-opacity-90 transition-colors">
-                Resume
+              <button className="px-6 py-3 rounded-md font-medium hover:bg-opacity-90 transition-colors" style={{ backgroundColor: 'var(--accent-color)' }}>
+                <a href="/resume.pdf" download="resume.pdf" target="_blank" rel="noopener noreferrer">
+                  Resume
+                </a>
               </button>
-              <button className="bg-[#e76f51] px-6 py-3 rounded-md font-medium hover:bg-opacity-90 transition-colors">
-                Github
+              <button className="px-6 py-3 rounded-md font-medium hover:bg-opacity-90 transition-colors" style={{ backgroundColor: 'var(--accent-color)' }}>
+                <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
+                  Github
+                </a>
               </button>
             </div>
           </div>
@@ -240,10 +254,10 @@ export default function Home() {
             {/* Purple Circle with Laptop */}
             <div className="absolute top-0 right-10 md:right-20 bg-purple-500 rounded-full w-40 h-40 mt-32 md:mt-10 sm:w-60 sm:h-60 flex items-center justify-center">
               <Image
-                src="/HEIF.png"
+                src="/person.png"
                 alt="Laptop illustration"
-                width={300}
-                height={120}
+                width={500}
+                height={220}
                 className=""
               />
             </div>
@@ -264,9 +278,8 @@ export default function Home() {
               <path d="M10,30 Q30,5 50,30 T90,30" fill="none" stroke="currentColor" strokeWidth="2" />
             </svg>
 
-
             {/* Document illustration - bottom */}
-            <div className="hidden md:flex md:absolute  bottom-20 right-44 bg-white rounded-lg w-44 h-24 shadow-lg">
+            <div className={`hidden md:flex md:absolute bottom-20 right-44 ${theme === 'dark' ? 'bg-white' : 'bg-gray-100'} rounded-lg w-44 h-24 shadow-lg`}>
               <div className="flex p-3">
                 <div className="w-8 h-8 rounded-full bg-[#e76f51]"></div>
                 <div className="ml-3">
@@ -278,7 +291,7 @@ export default function Home() {
             </div>
 
             {/* Curved arrow */}
-            <svg className="hidden md:flex md:absolute  bottom-20 right-20 w-32 h-32 text-gray-400" viewBox="0 0 100 100">
+            <svg className="hidden md:flex md:absolute bottom-20 right-20 w-32 h-32 text-gray-400" viewBox="0 0 100 100">
               <path d="M10,80 Q50,10 90,80" fill="none" stroke="currentColor" strokeWidth="2" />
               <polygon points="90,80 85,70 95,70" fill="currentColor" />
             </svg>
@@ -296,36 +309,8 @@ export default function Home() {
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className="w-full text-center justify-center items-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12">Skills</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-12" style={{ color: 'var(--text-primary)' }}>Skills</h2>
 
-          {/* Technology Orbit Visual */}
-          {/* <div className="relative z-20 flex justify-center items-center w-[140px] h-[140px] rounded-full bg-gradient-to-tr from-[#4b2f8a] to-[#2e1a5a] shadow-[0_0_80px_20px_rgba(107,70,193,0.7)]">
-              <svg aria-hidden="true" className="w-20 h-20 text-white" fill="none" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" viewBox="0 0 24 24">
-                <path d="M8 7h8M8 17h8M8 12h8 s">
-                </path>
-                <path d="M12 7 8 12 12 17">
-                </path>
-              </svg>
-            </div> */}
-
-          {/* language */}
-          {/* React
-            Node.js
-            Express.js
-            JavaScript
-            TypeScript
-            SQL
-            pgAdmin
-            Elasticsearch
-            Hero ui
-            Ant Design
-            Docker
-            Gitlab
-            HTML
-            CSS
-            Tailwind CSS
-            Dart
-            Flutter */}
           <div className="flex justify-center items-center sm:space-x-6 md:space-x-16 space-x-2 mb-10">
             <FontAwesomeIcon icon={faHtml5} className="w-8 h-8 text-[#E34F26] md:text-4xl text-xl" />
             <FontAwesomeIcon icon={faCss3} className="w-8 h-8 text-[#1572B6] md:text-4xl text-xl" />
@@ -333,7 +318,7 @@ export default function Home() {
             <FontAwesomeIcon icon={faReact} className="w-8 h-8 text-[#61DAFB] md:text-4xl text-xl" />
             <FontAwesomeIcon icon={faNodeJs} className="w-8 h-8 text-[#339933] md:text-4xl text-xl" />
             <FontAwesomeIcon icon={faGit} className="w-8 h-8 text-[#F05032] md:text-4xl text-xl" />
-            <FontAwesomeIcon icon={faGithub} className="w-8 h-8 text-white md:text-4xl text-xl" />
+            <FontAwesomeIcon icon={faGithub} className={`w-8 h-8 ${theme === 'dark' ? 'text-white' : 'text-black'} md:text-4xl text-xl`} />
             <FontAwesomeIcon icon={faDocker} className="w-8 h-8 text-[#2496ED] md:text-4xl text-xl" />
           </div>
 
@@ -396,31 +381,29 @@ export default function Home() {
                 } as React.CSSProperties}
               ></span>
 
-
               <div>
-                <p className="text-white">
-                  <strong className="text-2xl md:text-3xl ">Language</strong>
+                <p className={theme === 'dark' ? 'text-white' : 'text-black'}>
+                  <strong className="text-2xl md:text-3xl">Language</strong>
                   <br />
-                  <strong className="text-sm md:text-lg text-gray-300">HTML, CSS, JavaScript, TypeScript, Dart, SQL</strong>
+                  <strong className={`text-sm md:text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>HTML, CSS, JavaScript, TypeScript, Dart, SQL</strong>
                 </p>
 
-                <p className="text-white">
+                <p className={theme === 'dark' ? 'text-white' : 'text-black'}>
                   <strong className="text-2xl md:text-3xl">Framework & Library</strong>
                   <br />
-                  <strong className="text-sm md:text-lg text-gray-300">ReactJS, NextJS, Flutter, Bootstrap, Tailwindcss, NextUI</strong>
+                  <strong className={`text-sm md:text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>ReactJS, NextJS, Flutter, Bootstrap, Tailwindcss, NextUI</strong>
                 </p>
 
-                <p className="text-white">
+                <p className={theme === 'dark' ? 'text-white' : 'text-black'}>
                   <strong className="text-2xl md:text-3xl">Tool</strong>
                   <br />
-                  <strong className="text-sm md:text-lg text-gray-300">Git Version Control, VSCode, Figma, Slack, Diagrams.net, Confluence Jira Software, Vercel</strong>
+                  <strong className={`text-sm md:text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Git Version Control, VSCode, Figma, Slack, Diagrams.net, Confluence Jira Software, Vercel</strong>
                 </p>
-
               </div>
             </div>
           </div>
 
-          <div className=" w-full flex h-[200px] justify-center items-center">
+          <div className="w-full flex h-[200px] justify-center items-center">
             <svg aria-hidden="true" className="absolute inset-0 w-full h-full mt-[100px]" fill="none" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
               <ellipse cx="450" cy="280" rx="380" ry="80" stroke="#6b46c1" strokeOpacity="0.3" strokeWidth="1">
               </ellipse>
@@ -430,54 +413,59 @@ export default function Home() {
               </ellipse>
             </svg>
           </div>
-
         </div>
       </motion.section>
 
       {/* Experience Section */}
       <motion.section
         id="expertise"
-        className="bg-gradient-to-b "
+        className="bg-gradient-to-b"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.07 }}
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className="max-w-7xl mx-auto px-8">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">Experience</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8" style={{ color: 'var(--text-primary)' }}>Experience</h2>
           <div className="flex flex-row items-start">
             {/* Timeline */}
             <div className="hidden md:flex relative flex-col items-center mr-10" style={{ minWidth: 160 }}>
-              {/* Vertical line */}
-              {/* <div className="absolute left-1/2 top-8 bottom-0 w-1 bg-black" style={{ transform: 'translateX(-50%)' }}></div> */}
               {/* Year 1 */}
               <div className="flex flex-col items-center">
-                <div className="w-1 h-20 bg-black"></div>
-                <span className="text-2xl font-medium mt-2 mb-2">2020 - 2021</span>
+                <div className="w-1 h-20" style={{ backgroundColor: 'var(--border-color)' }}></div>
+                <span className="text-2xl font-medium mt-2 mb-2" style={{ color: 'var(--text-primary)' }}>2020 - 2021</span>
               </div>
-              <div className="w-1 h-[200px] bg-black"></div>
+              <div className="w-1 h-[200px]" style={{ backgroundColor: 'var(--border-color)' }}></div>
               {/* Year 2 */}
               <div className="flex flex-col items-center">
-                <span className="text-2xl font-medium mt-2 mb-2">2022 - Current</span>
+                <span className="text-2xl font-medium mt-2 mb-2" style={{ color: 'var(--text-primary)' }}>2022 - Current</span>
               </div>
             </div>
             {/* Experience Cards */}
             <div className="flex flex-col gap-24 w-full">
               {/* Card 1 */}
-              <div className="border border-black rounded-xl p-6 bg-white text-black shadow-md max-w-3xl">
+              <div className="rounded-xl p-6 shadow-md max-w-3xl" style={{
+                backgroundColor: 'var(--card-bg)',
+                color: 'var(--text-primary)',
+                border: `1px solid var(--border-color)`
+              }}>
                 <h3 className="text-2xl md:hidden">2020 - 2021</h3>
-                <h3 className="text-2xl font-semibold mb-2 text-[#e76f51] drop-shadow-md">แข่ง A-math</h3>
-                <p className="text-sm mb-1">กีฬามหาวิทยาลัยไทย (2018) กีฬามหาวิทยาลัยไทย (2018)</p>
-                <p className="text-sm">เป็นกีฬาที่เกี่ยวกับการวางแผนที่มีการคำนวณเลขมาผสม โดยใช้หลักการของสมการเบื้องต้น</p>
-                <p className="text-sm">เป็นกีฬาที่เกี่ยวกับการวางแผนที่มีการคำนวณเลขมาผสม โดยใช้หลักการของสมการเบื้องต้น</p>
+                <h3 className="text-2xl font-semibold mb-2 drop-shadow-md" style={{ color: 'var(--accent-color)' }}>Experience1</h3>
+                <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>Developed and maintained multiple web applications using React, Next.js, and TypeScript</p>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Implemented responsive designs and interactive UI components following best practices</p>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Collaborated with team members using Git version control and agile methodologies</p>
               </div>
               {/* Card 2 */}
-              <div className="border border-black rounded-xl p-8 bg-white text-black shadow-md max-w-3xl">
+              <div className="rounded-xl p-8 shadow-md max-w-3xl" style={{
+                backgroundColor: 'var(--card-bg)',
+                color: 'var(--text-primary)',
+                border: `1px solid var(--border-color)`
+              }}>
                 <h3 className="text-2xl md:hidden">2022 - Current</h3>
-                <h3 className="text-2xl font-semibold mb-2 text-[#e76f51] drop-shadow-md">แข่ง A-math</h3>
-                <p className="text-sm mb-1">กีฬามหาวิทยาลัยไทย (2018) กีฬามหาวิทยาลัยไทย (2018)</p>
-                <p className="text-sm">เป็นกีฬาที่เกี่ยวกับการวางแผนที่มีการคำนวณเลขมาผสม โดยใช้หลักการของสมการเบื้องต้น</p>
-                <p className="text-sm">เป็นกีฬาที่เกี่ยวกับการวางแผนที่มีการคำนวณเลขมาผสม โดยใช้หลักการของสมการเบื้องต้น</p>
+                <h3 className="text-2xl font-semibold mb-2 drop-shadow-md" style={{ color: 'var(--accent-color)' }}>Experience2</h3>
+                <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>Developed and maintained multiple web applications using React, Next.js, and TypeScript</p>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Implemented responsive designs and interactive UI components following best practices</p>
+                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Collaborated with team members using Git version control and agile methodologies</p>
               </div>
             </div>
           </div>
@@ -488,6 +476,9 @@ export default function Home() {
       <motion.section
         id="projects"
         className="py-24 bg-gradient-to-b"
+        style={{
+          background: `linear-gradient(to bottom, var(--primary-bg), var(--secondary-bg))`
+        }}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.07 }}
@@ -499,25 +490,24 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-start gap-10">
               {/* Left Content */}
               <div className="md:w-1/2 mt-10">
-                <h2 className="text-4xl md:text-5xl font-bold mb-8">Example Project</h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-8" style={{ color: 'var(--text-primary)' }}>Example Project 1</h2>
 
                 {/* Project Description Card */}
-                <div className="bg-[#1e1a35] rounded-xl p-8 max-w-md">
-                  <p className="text-gray-300 leading-relaxed">
+                <div className="rounded-xl p-8 max-w-md" style={{ backgroundColor: 'var(--card-bg)' }}>
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     A web app for visualizing personalized Spotify data. View your top artists, top tracks, recently played tracks, and detailed audio information about each track. Create and save new playlists of recommended tracks based on your existing playlists and more.
                   </p>
                 </div>
-
               </div>
 
               {/* Right Content - Project Image */}
               <div className="md:w-1/2 relative">
-                <div className="shadow-2xl rounded-lg overflow-hidden border border-gray-800">
+                <div className="shadow-2xl rounded-lg overflow-hidden w-full h-[390px]" style={{ border: `1px solid var(--border-color)` }}>
                   <Image
-                    src="/project1.png"
+                    src="/programmer.png"
                     alt="Project mockup showing a website wireframe"
                     width={600}
-                    height={400}
+                    height={600}
                     className="w-full h-auto"
                   />
                 </div>
@@ -527,23 +517,59 @@ export default function Home() {
 
           {/* Project 2 - Reversed layout */}
           <div>
+            {/* Project 2 */}
+            <div className="mb-40">
+              <div className="flex flex-col md:flex-row items-start gap-10">
+                {/* Left Content */}
+                <div className="md:w-1/2 mt-10">
+                  <h2 className="text-4xl md:text-5xl font-bold mb-8" style={{ color: 'var(--text-primary)' }}>Example Project 2</h2>
 
+                  {/* Project Description Card */}
+                  <div className="rounded-xl p-8 max-w-md" style={{ backgroundColor: 'var(--card-bg)' }}>
+                    <p style={{ color: 'var(--text-secondary)' }}>
+                      A web app for visualizing personalized Spotify data. View your top artists, top tracks, recently played tracks, and detailed audio information about each track. Create and save new playlists of recommended tracks based on your existing playlists and more.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Content - Project Image */}
+                <div className="md:w-1/2 relative">
+                  <div className="shadow-2xl rounded-lg overflow-hidden w-full h-[390px]" style={{ border: `1px solid var(--border-color)` }}>
+                    <Image
+                      src="/programmer.png"
+                      alt="Project mockup showing a website wireframe"
+                      width={600}
+                      height={600}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
       </motion.section>
 
       {/* Contact Section */}
       <motion.section
         id="contact"
-        className="py-24 bg-gradient-to-b from-[#272642] to-[#1a1730]"
+        className="py-24 bg-gradient-to-b"
+        style={{
+          background: `linear-gradient(to bottom, var(--primary-bg), var(--secondary-bg))`
+        }}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.07 }}
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="max-w-7xl mx-auto px-8">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">Contact</h2>
+        <div className="max-w-7xl mx-auto px-8 flex flex-col">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8" style={{ color: 'var(--text-primary)' }}>Contact Information</h2>
+          <div className="text-sm btn btn-soft w-[270px] mb-5" style={{ color: 'var(--text-secondary)' }}>
+            Email: <a href="mailto:contact@example.com">contact@example.com</a>
+          </div>
+          <div className="text-sm btn btn-soft w-[270px]" style={{ color: 'var(--text-secondary)' }}>
+            Phone: <a href="tel:+1234567890">+1234567890</a>
+          </div>
         </div>
       </motion.section>
     </div>
